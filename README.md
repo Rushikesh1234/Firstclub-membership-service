@@ -9,7 +9,7 @@ A high-performance, enterprise-grade subscription and dynamic tier reevaluation 
 ### The Challenge
 The core requirement was to construct a robust backend membership engine capable of managing user subscription lifecycles (subscribing, upgrading, and changing plans) while actively tracking user milestone metrics (monthly spends, transaction frequencies, and demographic metadata) to recalculate rewards or tier status levels dynamically.
 
-### What We Delivered
+### What I Delivered
 We designed and implemented a production-ready microservice module that features:
 1. **REST API Gateway Edge**: Clean, idempotent REST endpoints managing subscriber plan selections with strict structural JSR-380 input data validations.
 2. **Asynchronous Milestone Ingestion**: A decoupled event consumer mapping ingestion pipelines via Apache Kafka to absorb burst order transaction events gracefully without degrading customer checkout experiences.
@@ -19,10 +19,10 @@ We designed and implemented a production-ready microservice module that features
 
 ---
 
-## 📐 Architecture & Senior Engineering Design Decisions
+## 📐 Architectural Decisions
 
 ### 1. The Strategy Design Pattern (Tier Eligibility Engine)
-* **The Decision**: Rather than embedding endless conditional `if-else` blocks inside our core service layer to validate if a user qualifies for a tier upgrade, we implemented an extensible **Strategy Pattern** linked via a master `TierEligibilityStrategy` interface.
+* **The Decision**: Rather than embedding endless conditional `if-else` blocks inside our core service layer to validate if a user qualifies for a tier upgrade, I implemented an extensible **Strategy Pattern** linked via a master `TierEligibilityStrategy` interface.
 * **The Thought Process**: Hardcoded business thresholds limit long-term agility. By isolating `OrderCountStrategy`, `OrderValueStrategy`, and `CohortEligibilityStrategy` into decoupled stateless components, our application strictly adheres to the **Open-Closed Principle (SOLID)**. Introducing future rules (e.g., Geo-location restrictions or referral milestones) requires creating a new strategy class without rewriting existing code.
 
 ### 2. Out-of-Band Async Processing via Kafka
@@ -31,7 +31,7 @@ We designed and implemented a production-ready microservice module that features
 
 ### 3. Distributed Cache Invalidation Pattern
 * **The Decision**: Upon a successful tier advancement, an automated hook immediately flushes the user profile cache layer via `RedisTemplate.delete(userId)`.
-* **The Thought Process**: To maintain ultra-low latency reads across frontend user profiles, subscriber data is heavily cached. To avoid systemic "stale data splits" where a user sees their old tier status after a real-time upgrade, we enforce strict programmatic cache eviction immediate to state write commits.
+* **The Thought Process**: To maintain ultra-low latency reads across frontend user profiles, subscriber data is heavily cached. To avoid systemic "stale data splits" where a user sees their old tier status after a real-time upgrade, I enforce strict programmatic cache eviction immediate to state write commits.
 
 ### 4. High-Throughput Concurrency & Race-Condition Insulation
 * **The Decision**: Combined JPA Optimistic Locking (`@Version`) with stateless strategy workers.
@@ -109,23 +109,27 @@ Import these definitions into Postman to test system endpoints locally.
 * **HTTP Method:** `POST`
 * **URL:** `http://localhost:8080/api/v1/memberships/subscribe`
 * **Headers:** `Content-Type: application/json`
-* **Payload:** ```json
+* **Payload:** 
+```json
 {
     "userId": "user_dev_03",
     "planId": "plan_quarterly_adv",
     "tierId": "tier_silver"
 }
+```
 
 ### 2. Modify an Existing Subscription
 * **HTTP Method:** `PUT`
 * **URL:** `http://localhost:8080/api/v1/memberships/modify`
 * **Headers:** `Content-Type: application/json`
-* **Payload:** ```json
+* **Payload:** 
+```json
 {
     "userId": "user_dev_03",
     "planId": "plan_yearly_pro",
     "tierId": "tier_silver"
 }
+```
 
 ### 3. Fetch the Seeded Catalog (Plans and Tiers)
 * **HTTP Method:** `GET`
@@ -141,11 +145,20 @@ Import these definitions into Postman to test system endpoints locally.
 
 ### 4. Out-Of-Band Realtime Upgrade Verification (Kafka Event Simulation)
 To simulate live streaming transactions matching your database cohort configurations, open your host terminal and broadcast a structured payload directly into the active containerized broker:
+
 ```bash
 docker exec -it firstclub-kafka kafka-console-producer --bootstrap-server localhost:9092 --topic order-milestone-events
 ```
-Paste the following event marker message into the interactive standard input stream prompt: ```json
-{"userId": "user_dev_03", "currentMonthOrderCount": 5, "currentMonthSpend": 100.00}
+
+Paste the following event marker message into the interactive standard input stream prompt: `
+
+```json
+{
+    "userId": "user_dev_03", 
+    "currentMonthOrderCount": 5, 
+    "currentMonthSpend": 100.00
+}
+```
 
 ---
 
