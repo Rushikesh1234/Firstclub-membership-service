@@ -1,0 +1,173 @@
+{
+  "info": {
+    "_postman_id": "02b1df19-ed8c-412b-b62d-385747ecf5a5",
+    "name": "Firstclub_membership Postman Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "7224309",
+    "_collection_link": "https://go.postman.co/collection/7224309-02b1df19-ed8c-412b-b62d-385747ecf5a5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Fetch the Seeded Catalog",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/memberships/catalog",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "memberships",
+            "catalog"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add New User Subscription",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"user_dev_01\",\n  \"planId\": \"plan_yearly_plat\",\n  \"tierId\": \"tier_silver\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/memberships/subscribe",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "memberships",
+            "subscribe"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Subscription Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/memberships/status/:user_id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "memberships",
+            "status",
+            ":user_id"
+          ],
+          "query": [
+            {
+              "key": "userId",
+              "value": null,
+              "disabled": true
+            }
+          ],
+          "variable": [
+            {
+              "key": "user_id",
+              "value": "user_dev_02"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Modify / Upgrade Plan and Tier Configurations",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"user_dev_01\",\n  \"planId\": \"plan_yearly_plat\",\n  \"tierId\": \"tier_platinum\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/memberships/modify/:user_id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "memberships",
+            "modify",
+            ":user_id"
+          ],
+          "variable": [
+            {
+              "key": "user_id",
+              "value": "user_dev_01"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Subscription",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/memberships/cancel/:user_id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "memberships",
+            "cancel",
+            ":user_id"
+          ],
+          "variable": [
+            {
+              "key": "user_id",
+              "value": "user_dev_01"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
