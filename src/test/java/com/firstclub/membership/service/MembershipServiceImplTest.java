@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings("null") // Suppresses strict IDE null type-safety analysis warnings across all Mockito matchers
+@SuppressWarnings("null")
 class MembershipServiceImplTest {
 
     @Mock private SubscriptionRepository subscriptionRepository;
