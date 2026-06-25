@@ -1,0 +1,5 @@
+com/firstclub/membership/exception/GlobalExceptionHandlerTest.class
+com/firstclub/membership/domain/strategy/OrderCountStrategyTest.class
+com/firstclub/membership/service/MembershipServiceImplTest.class
+com/firstclub/membership/domain/strategy/OrderValueStrategyTest.class
+com/firstclub/membership/domain/strategy/CohortEligibilityStrategyTest.class
